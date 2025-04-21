@@ -1,0 +1,39 @@
+name: Autograding
+
+on: [push, pull_request]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install Node.js and dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install -g htmlhint stylelint jest
+
+      # Lint HTML
+      - name: Lint HTML
+        run: htmlhint index.html
+
+      # Lint CSS
+      - name: Lint CSS
+        run: stylelint style.css
+
+      # Run JS tests (optional, if you have Jest tests)
+      - name: Run JS tests
+        run: jest
+
+      # Basic check for required elements (example)
+      - name: Check for required HTML elements
+        run: |
+          grep "<header>" index.html
+          grep "<nav>" index.html
+          grep "<footer>" index.html
+          grep "show-more-btn" index.html
